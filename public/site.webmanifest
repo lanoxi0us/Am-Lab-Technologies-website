@@ -1,0 +1,14 @@
+{
+  "name": "AM Labs",
+  "short_name": "AM Labs",
+  "description": "AM Labs designs and builds modern software, web platforms, and mobile applications for ambitious businesses.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#052E16",
+  "theme_color": "#052E16",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-neutral-200;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-neutral-50 text-neutral-900 font-body antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-semibold text-neutral-900;
+  }
+
+  :focus-visible {
+    outline: 2px solid theme("colors.brand.500");
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  ::selection {
+    background-color: theme("colors.brand.200");
+    color: theme("colors.brand.900");
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------
+     Texture utilities. Purely decorative, always behind content, and
+     cheap — SVG data URIs and CSS gradients, no images, no JS.
+     --------------------------------------------------------------- */
+
+  /* Fine film grain. Applied to dark surfaces so large flat areas of
+     brand-900 read as a material rather than a solid fill. */
+  .texture-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.22;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  }
+
+  /* Engineering grid. For light sections — a faint blueprint plane. */
+  .texture-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+        to right,
+        theme("colors.neutral.900") 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, theme("colors.neutral.900") 1px, transparent 1px);
+    background-size: 72px 72px;
+    opacity: 0.035;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 78%);
+    -webkit-mask-image: radial-gradient(
+      ellipse 80% 70% at 50% 40%,
+      #000 30%,
+      transparent 78%
+    );
+  }
+
+  /* Same grid, tuned for dark surfaces. */
+  .texture-grid-dark::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(to right, #ffffff 1px, transparent 1px),
+      linear-gradient(to bottom, #ffffff 1px, transparent 1px);
+    background-size: 72px 72px;
+    opacity: 0.045;
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 0%, #000 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(
+      ellipse 90% 80% at 50% 0%,
+      #000 20%,
+      transparent 75%
+    );
+  }
+
+  /* Dot matrix — a lighter alternative to the grid, used in the hero. */
+  .texture-dots::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+      theme("colors.neutral.900") 1px,
+      transparent 1px
+    );
+    background-size: 26px 26px;
+    opacity: 0.055;
+    mask-image: radial-gradient(ellipse 75% 65% at 30% 35%, #000 10%, transparent 72%);
+    -webkit-mask-image: radial-gradient(
+      ellipse 75% 65% at 30% 35%,
+      #000 10%,
+      transparent 72%
+    );
+  }
+
+  /* ---------------------------------------------------------------
+     Brand motifs
+     --------------------------------------------------------------- */
+
+  /* Soft radial brand glow for hero / CTA backdrops. */
+  .glow-brand-light {
+    background-image: radial-gradient(
+        ellipse 55% 60% at 78% 28%,
+        rgba(22, 163, 74, 0.13),
+        transparent 70%
+      ),
+      radial-gradient(ellipse 60% 50% at 8% 5%, rgba(13, 85, 56, 0.07), transparent 65%);
+  }
+
+  .glow-brand-dark {
+    background-image: radial-gradient(
+        ellipse 60% 55% at 15% 0%,
+        rgba(22, 163, 74, 0.22),
+        transparent 68%
+      ),
+      radial-gradient(ellipse 50% 60% at 92% 100%, rgba(13, 85, 56, 0.3), transparent 70%);
+  }
+
+  /* Clear, restrained labels that sit quietly above section headings. */
+  .section-label {
+    @apply font-body text-sm font-semibold leading-5 text-brand-800;
+  }
+
+  .section-label-dark {
+    @apply font-body text-sm font-semibold leading-5 text-brand-300;
+  }
+
+  /* Hairline seam between adjacent sections — softer than a hard border. */
+  .seam-top {
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      theme("colors.neutral.200"),
+      transparent
+    );
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Hides scrollbars on horizontally scrollable strips (logo/tech marquees). */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
