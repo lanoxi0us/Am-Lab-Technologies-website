@@ -16,7 +16,18 @@ import type { ContactFormValues } from "@/lib/validation/contact";
  * like `Start a Project <inquiries@amlabs.co.ke>` for a proper "From".
  */
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Created lazily: the Resend constructor throws when no API key is present,
+// and instantiating it at module load would crash `next build` (which
+// imports route modules while collecting page data) whenever
+// RESEND_API_KEY isn't available in the build environment.
+let resendClient: Resend | null = null;
+
+function getResend() {
+  if (!resendClient) {
+    resendClient = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resendClient;
+}
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "AM Labs Website <onboarding@resend.dev>";
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "alanmugambiofficial@gmail.com";
@@ -70,7 +81,7 @@ export async function sendContactEmail(data: ContactFormValues) {
   // errors (bad key, unverified sender, rate limit, etc.) — checking
   // `error` explicitly matters here, otherwise a failed send is
   // indistinguishable from a successful one to the caller.
-  const { data: result, error } = await resend.emails.send({
+  const { data: result, error } = await getResend().emails.send({
     from: FROM_EMAIL,
     to: TO_EMAIL,
     replyTo: data.email,
